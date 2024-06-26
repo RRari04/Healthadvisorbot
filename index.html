@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Health Consultant</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<h1>Welcome to your Personal Health Advisor</h1>
+<div id="questionnaire">
+    <div class="question" id="question1">
+        <p>Are you satisfied with your health? (yes/no)</p>
+        <input type="text" id="answer1">
+        <button onclick="nextQuestion(1)">Next</button>
+    </div>
+    <div class="question hidden" id="question2">
+        <p>Do you exercise regularly? (yes/no)</p>
+        <input type="text" id="answer2">
+        <button onclick="nextQuestion(2)">Next</button>
+    </div>
+    <div class="question hidden" id="question3">
+        <p>Do you have any dietary restrictions? (yes/no)</p>
+        <input type="text" id="answer3">
+        <button onclick="nextQuestion(3)">Next</button>
+    </div>
+    <div class="question hidden" id="question4">
+        <p>Do you smoke? (yes/no)</p>
+        <input type="text" id="answer4">
+        <button onclick="nextQuestion(4)">Next</button>
+    </div>
+    <div class="question hidden" id="question5">
+        <p>Do you drink alcohol? (yes/no)</p>
+        <input type="text" id="answer5">
+        <button onclick="nextQuestion(5)">Next</button>
+    </div>
+    <div class="question hidden" id="question6">
+        <p>Do you drink enough water daily? (yes/no)</p>
+        <input type="text" id="answer6">
+        <button onclick="nextQuestion(6)">Next</button>
+    </div>
+    <div class="question hidden" id="question7">
+        <p>Do you have regular health check-ups? (yes/no)</p>
+        <input type="text" id="answer7">
+        <button onclick="nextQuestion(7)">Next</button>
+    </div>
+    <div class="question hidden" id="question8">
+        <p>Do you get 7-8 hours of sleep daily? (yes/no)</p>
+        <input type="text" id="answer8">
+        <button onclick="nextQuestion(8)">Next</button>
+    </div>
+    <div class="question hidden" id="question9">
+        <p>Do you experience stress regularly? (yes/no)</p>
+        <input type="text" id="answer9">
+        <button onclick="nextQuestion(9)">Next</button>
+    </div>
+    <div class="question hidden" id="question10">
+        <p>Do you have a balanced diet? (yes/no)</p>
+        <input type="text" id="answer10">
+        <button onclick="nextQuestion(10)">Next</button>
+    </div>
+    <div class="question hidden" id="result">
+        <p id="advice"></p>
+        <button onclick="restart()">Restart</button>
+    </div>
+</div>
+
+<script>
+    let currentQuestion = 1;
+    let responses = {};
+
+    function nextQuestion(questionNumber) {
+        const answer = document.getElementById(`answer${questionNumber}`).value.trim().toLowerCase();
+        responses[`answer${questionNumber}`] = answer;
+
+        document.getElementById(`question${questionNumber}`).classList.add('hidden');
+
+        if (questionNumber === 1 && answer === 'yes') {
+            document.getElementById('advice').innerText = 'Thank you for considering the Personal Health Advisor System. Goodbye!';
+            document.getElementById('result').classList.remove('hidden');
+            return;
+        }
+
+        const nextQuestionNumber = questionNumber + 1;
+        const nextQuestionElement = document.getElementById(`question${nextQuestionNumber}`);
+
+        if (nextQuestionElement) {
+            nextQuestionElement.classList.remove('hidden');
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        let advice = '';
+
+        // Sample logic to determine advice based on answers
+        if (responses.answer2 === 'no') {
+            advice += 'Consider starting regular exercise.\n';
+        }
+        if (responses.answer3 === 'yes') {
+            advice += 'Consider consulting with a nutritionist.\n';
+        }
+        if (responses.answer4 === 'yes') {
+            advice += 'It is highly recommended to quit smoking.\n';
+        }
+        if (responses.answer5 === 'yes') {
+            advice += 'Consider reducing alcohol intake.\n';
+        }
+        if (responses.answer6 === 'no') {
+            advice += 'Ensure you drink enough water daily.\n';
+        }
+        if (responses.answer7 === 'no') {
+            advice += 'Regular health check-ups are important. Please consider scheduling one.\n';
+        }
+        if (responses.answer8 === 'no') {
+            advice += 'Adequate sleep is crucial for health. Try to get 7-8 hours of sleep daily.\n';
+        }
+        if (responses.answer9 === 'yes') {
+            advice += 'Try stress-reducing activities like meditation, yoga, or hobbies you enjoy.\n';
+        }
+        if (responses.answer10 === 'no') {
+            advice += 'A balanced diet is essential for good health. Consider consulting with a nutritionist.\n';
+        }
+
+        if (advice === '') {
+            advice = 'You seem to have a good overall health routine. Keep it up!';
+        }
+
+        document.getElementById('advice').innerText = advice;
+        document.getElementById('result').classList.remove('hidden');
+    }
+
+    function restart() {
+        currentQuestion = 1;
+        responses = {};
+        document.getElementById('result').classList.add('hidden');
+        document.getElementById('advice').innerText = '';
+        document.getElementById('question1').classList.remove('hidden');
+        // Reset all inputs
+        document.querySelectorAll('input').forEach(input => input.value = '');
+    }
+</script>
+</body>
+</html>
